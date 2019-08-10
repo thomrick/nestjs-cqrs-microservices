@@ -1,0 +1,13 @@
+{
+  "name": "user",
+  "version": "0.0.0",
+  "description": "User microservice",
+  "author": "Thomas Ricart <thomasr2309@gmail.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "start:dev": "ts-node src/main.ts"
+  }
+}
