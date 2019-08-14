@@ -1,0 +1,14 @@
+{
+  "name": "@profile/core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Thomas Ricart <thomasr2309@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm run -s clean && tsc",
+    "clean": "rm -rf dist/*"
+  }
+}

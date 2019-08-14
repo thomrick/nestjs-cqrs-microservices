@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs-microservices';
-import { CreateUser } from 'user';
+import { CreateUser } from '@user/core';
 import { CreateUserDto } from './dto';
 
 @Controller('users')
