@@ -1,17 +1,18 @@
 {
-  "name": "user",
+  "name": "api",
   "version": "0.0.0",
-  "description": "User microservice",
+  "description": "> TODO: description",
   "author": "Thomas Ricart <thomasr2309@gmail.com>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build": "npm run -s clean && tsc",
-    "clean": "rm -rf dist/*",
+    "build": "tsc",
     "start": "node dist/main.js",
     "start:dev": "ts-node src/main.ts"
   },
   "dependencies": {
-    "@nestjs/cqrs-microservices": "*"
+    "@nestjs/platform-express": "^6.5.3",
+    "@nestjs/cqrs-microservices": "*",
+    "user": "*"
   }
 }

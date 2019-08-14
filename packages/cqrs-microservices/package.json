@@ -1,0 +1,22 @@
+{
+  "name": "@nestjs/cqrs-microservices",
+  "version": "0.0.0",
+  "description": "Nest CQRS module combined to microservices",
+  "author": "Thomas Ricart <thomasr2309@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "npm run -s clean && tsc",
+    "clean": "rm -rf dist/*"
+  },
+  "peerDependencies": {
+    "@nestjs/cqrs": "^6.0.1",
+    "@nestjs/microservices": "^6.5.3"
+  },
+  "devDependencies": {
+    "@nestjs/cqrs": "^6.0.1",
+    "@nestjs/microservices": "^6.5.3"
+  }
+}

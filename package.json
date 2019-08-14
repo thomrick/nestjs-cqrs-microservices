@@ -4,25 +4,30 @@
   "description": "A sample of Nest CQRS combined to microservices",
   "main": "index.js",
   "scripts": {
-    "init": "lerna init",
+    "add": "lerna add",
     "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
     "create": "lerna create",
+    "init": "lerna init",
     "start:dev": "lerna run start:dev --stream"
   },
   "author": "ThomRick",
   "license": "MIT",
+  "dependencies": {
+    "@nestjs/common": "^6.5.3",
+    "@nestjs/core": "^6.5.3",
+    "@nestjs/cqrs": "^6.0.1",
+    "@nestjs/microservices": "^6.5.3",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.2",
+    "uuid": "^3.3.2"
+  },
   "devDependencies": {
     "@types/node": "^12.7.1",
+    "@types/uuid": "^3.4.5",
     "lerna": "^3.16.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
-  },
-  "dependencies": {
-    "@nestjs/common": "^6.5.3",
-    "@nestjs/core": "^6.5.3",
-    "@nestjs/microservices": "^6.5.3",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.5.2"
   }
 }
