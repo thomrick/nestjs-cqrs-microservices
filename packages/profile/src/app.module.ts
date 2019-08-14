@@ -3,7 +3,6 @@ import { CqrsMicroservicesModule } from '@nestjs/cqrs-microservices';
 import { Transport } from '@nestjs/microservices';
 import { CommandsModule } from './commands/commands.module';
 import { EventsModule } from './events/events.module';
-import { Sagas } from './sagas';
 
 @Module({
   imports: [
@@ -15,9 +14,6 @@ import { Sagas } from './sagas';
     }),
     CommandsModule,
     EventsModule,
-  ],
-  providers: [
-    ...Sagas,
   ],
 })
 export class AppModule {}

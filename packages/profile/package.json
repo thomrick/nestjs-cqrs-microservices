@@ -1,10 +1,9 @@
 {
-  "name": "user",
+  "name": "profile",
   "version": "0.0.0",
-  "description": "User microservice",
+  "description": "> TODO: description",
   "author": "Thomas Ricart <thomasr2309@gmail.com>",
   "license": "MIT",
-  "main": "index.js",
   "scripts": {
     "build": "npm run -s clean && tsc",
     "clean": "rm -rf dist/*",
@@ -12,7 +11,6 @@
     "start:dev": "ts-node src/main.ts"
   },
   "dependencies": {
-    "@nestjs/cqrs-microservices": "*",
-    "profile": "*"
+    "@nestjs/cqrs-microservices": "*"
   }
 }
