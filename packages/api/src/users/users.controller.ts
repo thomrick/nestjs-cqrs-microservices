@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs-microservices';
 import { CreateUser } from '@user/core';
+import { from, Observable } from 'rxjs';
 import { CreateUserDto } from './dto';
 
 @Controller('users')
@@ -12,7 +13,7 @@ export class UsersController {
   }
 
   @Post()
-  public async create(@Body() dto: CreateUserDto): Promise<any> {
-    return this.commands.execute(new CreateUser(dto.email, dto.password, dto.username));
+  public create(@Body() dto: CreateUserDto): Observable<any> {
+    return from(this.commands.execute(new CreateUser(dto.email, dto.password, dto.username)));
   }
 }

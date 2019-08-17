@@ -1,5 +1,5 @@
 {
-  "name": "@user/command-service",
+  "name": "@user/event-service",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "Thomas Ricart <thomasr2309@gmail.com>",
@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@nestjs/cqrs-microservices": "*",
-    "@user/core": "*",
-    "@profile/core": "*"
+    "@user/core": "*"
   }
 }

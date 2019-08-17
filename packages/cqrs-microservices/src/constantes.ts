@@ -1,1 +1,0 @@
-export const COMMAND_BUS_CLIENT_TOKEN: string = 'COMMAND_BUS_CLIENT';

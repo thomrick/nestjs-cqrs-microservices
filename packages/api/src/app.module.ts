@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { CqrsMicroservicesModule } from '@nestjs/cqrs-microservices';
-import { Transport } from '@nestjs/microservices';
+import { Transport } from '@nestjs/common/enums/transport.enum';
+import { CqrsMicroservicesModule } from '@nestjs/cqrs-microservices';
 import { UsersModule } from './users';
 
 @Module({
   imports: [
-    CqrsMicroservicesModule.forRoot({
+    CqrsMicroservicesModule.connect({
       transport: Transport.REDIS,
       options: {
         url: 'redis://localhost:6379',

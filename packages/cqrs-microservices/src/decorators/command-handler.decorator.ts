@@ -1,12 +1,12 @@
-// tslint:disable: ban-types max-line-length
+// tslint:disable: ban-types
 import { Controller } from '@nestjs/common';
-import { CommandHandler as CqrsCommandHandler, ICommand } from '@nestjs/cqrs';
+import { CommandHandler as CqrsCommandHandler } from '@nestjs/cqrs';
 import { MessagePattern } from '@nestjs/microservices';
 
-export function CommandHandler(command: ICommand & Function): ClassDecorator {
+export function CommandHandler(command: Function): ClassDecorator {
   return (target: Function) => {
     CqrsCommandHandler(command)(target);
     Controller()(target);
-    MessagePattern(command.prototype.constructor.name)(target, 'execute', Reflect.getOwnPropertyDescriptor(target.prototype, 'execute')!);
+    MessagePattern(command.name)(target, 'execute', Reflect.getOwnPropertyDescriptor(target.prototype, 'execute')!);
   };
 }

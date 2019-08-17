@@ -12,6 +12,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUser> {
   }
 
   public async execute(command: CreateUser): Promise<any> {
+    console.log(CreateUserHandler.name, 'execute', command);
     const { email, password, username } = command;
     const UserModel = this.publisher.mergeClassContext(User);
     const user = new UserModel(uuid(), email, password, username);
