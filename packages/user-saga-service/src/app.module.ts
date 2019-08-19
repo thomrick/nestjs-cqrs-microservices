@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CqrsMicroservicesModule } from '@nestjs/cqrs-microservices';
-import { Transport } from '@nestjs/microservices';
-import { CommandHandlersModule } from './command-handlers';
+import { Transport } from '@nestjs/microservices';
+import { UserSagas } from './sagas';
 
 @Module({
   imports: [
@@ -11,7 +11,9 @@ import { CommandHandlersModule } from './command-handlers';
         url: 'redis://localhost:6379',
       },
     }),
-    CommandHandlersModule,
+  ],
+  providers: [
+    UserSagas,
   ],
 })
 export class AppModule {}

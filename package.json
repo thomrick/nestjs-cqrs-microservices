@@ -10,6 +10,7 @@
     "create": "lerna create",
     "init": "lerna init",
     "start:dev": "lerna run start:dev --stream",
+    "test": "lerna run test --stream",
     "test:e2e": "lerna run test:e2e --stream"
   },
   "author": "ThomRick",
@@ -22,6 +23,7 @@
     "redis": "^2.8.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.2",
+    "ts-json-serializer": "^1.2.4",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

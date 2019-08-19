@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "npm run -s clean && tsc",
-    "clean": "rm -rf dist/*"
+    "clean": "rm -rf dist/*",
+    "test": "jest"
   },
   "peerDependencies": {
     "@nestjs/cqrs": "^6.0.1",

@@ -1,5 +1,5 @@
 {
-  "name": "@user/core",
+  "name": "@user/saga-service",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "Thomas Ricart <thomasr2309@gmail.com>",
@@ -11,6 +11,8 @@
     "start:dev": "ts-node src/main.ts"
   },
   "dependencies": {
-    "@nestjs/cqrs-microservices": "*"
+    "@nestjs/cqrs-microservices": "*",
+    "@profile/core": "*",
+    "@user/core": "*"
   }
 }
