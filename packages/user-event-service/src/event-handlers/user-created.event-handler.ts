@@ -1,8 +1,7 @@
-import { IEventHandler } from '@nestjs/cqrs';
-import { EventHandler } from '@nestjs/cqrs-microservices';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { UserCreated } from '@user/core';
 
-@EventHandler(UserCreated)
+@EventsHandler(UserCreated)
 export class UserCreatedHandler implements IEventHandler<UserCreated> {
   public handle(event: UserCreated) {
     console.log(UserCreatedHandler.name, 'handle', event);

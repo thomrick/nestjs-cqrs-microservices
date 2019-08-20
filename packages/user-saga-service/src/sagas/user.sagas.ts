@@ -12,7 +12,10 @@ export class UserSagas {
   public readonly userCreated = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
       ofType(UserCreated),
-      map((event) => new CreateProfile(event.id)),
+      map((event) => {
+        console.log(UserSagas.name, 'userCreated', event);
+        return new CreateProfile(event.id);
+      }),
     );
   }
 }

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nestjs/cqrs-microservices": "*",
-    "@profile/core": "*"
+    "@profile/core": "*",
+    "@user/core": "*"
   }
 }

@@ -10,5 +10,8 @@
   "scripts": {
     "build": "npm run -s clean && tsc",
     "clean": "rm -rf dist/*"
+  },
+  "dependencies": {
+    "@nestjs/cqrs-microservices": "*"
   }
 }

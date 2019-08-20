@@ -1,40 +1,106 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
-import { CqrsModule, EventPublisher, QueryBus } from '@nestjs/cqrs';
-import { ExplorerService } from '@nestjs/cqrs/dist/services/explorer.service';
-import { ClientsModule, MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { CommandBus } from './command';
-import { CqrsMicroservicesController } from './cqrs-microservices.controller';
-import { EventBus } from './event';
+// tslint:disable: ban-types max-line-length
+import { DynamicModule, Global, Module, Provider, Type } from '@nestjs/common';
+import { CommandBus, CqrsModule, EventBus, ICommand, IEvent, QueryBus } from '@nestjs/cqrs';
+import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
+import { CQRSMicroservicesCommandController, CQRSMicroservicesEventController, CQRSMicroservicesQueryController } from './controllers';
+import { CQRSMicroservicesRemoteCommandHandler, CQRSMicroservicesRemoteEventHandler, CQRSMicroservicesRemoteQueryHandler } from './handlers';
+import { ICQRSMicroservicesRegisterOptions } from './options';
 import { SerializationService } from './services';
 
 @Global()
 @Module({})
-export class CqrsMicroservicesModule extends CqrsModule {
-  public static connect(options: MicroserviceOptions = { transport: Transport.TCP }): DynamicModule {
+export class CqrsMicroservicesModule {
+  public static connect(options?: ICQRSMicroservicesRegisterOptions): DynamicModule {
+    const providers: Provider[] = !!options ? this.createRemoteProviders(options) : [];
     return {
       module: CqrsMicroservicesModule,
       imports: [
-        ClientsModule.register([{
-          name: 'MESSAGE_BROKER',
-          ...options as any,
-        }]),
-      ],
-      controllers: [
-        CqrsMicroservicesController,
+        CqrsModule,
       ],
       providers: [
-        CommandBus,
-        EventBus,
-        EventPublisher,
-        ExplorerService,
-        QueryBus,
         SerializationService,
+        ...providers,
+      ],
+      controllers: [
+        CQRSMicroservicesCommandController,
+        CQRSMicroservicesEventController,
+        CQRSMicroservicesQueryController,
       ],
       exports: [
+        CqrsModule,
+      ],
+    };
+  }
+
+  public static register(options: ICQRSMicroservicesRegisterOptions): DynamicModule {
+    return {
+      module: CqrsMicroservicesModule,
+      imports: [
+        CqrsModule,
+      ],
+      providers: [
+        SerializationService,
+        ...this.createRemoteProviders(options),
+      ],
+      exports: [
+        CqrsModule,
+      ],
+    };
+  }
+
+  private static createRemoteProviders(options: ICQRSMicroservicesRegisterOptions): Provider[] {
+    const proxy: ClientProxy = ClientProxyFactory.create(options.options);
+    const commands: Provider[] = !!options.commands ? options.commands.map((command) => this.createRemoteCommandProvider(command, proxy)) : [];
+    const events: Provider[] = !!options.events ? options.events.map((event) => this.createRemoteEventProvider(event, proxy)) : [];
+    const queries: Provider[] = !!options.queries ? options.queries.map((query) => this.createRemoteQueryProvider(query, proxy)) : [];
+    return [
+      ...commands,
+      ...events,
+      ...queries,
+    ];
+  }
+
+  private static createRemoteCommandProvider(command: Type<ICommand>, proxy: ClientProxy): Provider {
+    return {
+      provide: `${command.name}RemoteCommandHandler`,
+      useFactory: (bus: CommandBus, serializer: SerializationService) => {
+        const handler = new CQRSMicroservicesRemoteCommandHandler(proxy, serializer);
+        bus.bind(handler, command.name);
+        return handler;
+      },
+      inject: [
         CommandBus,
+        SerializationService,
+      ],
+    };
+  }
+
+  private static createRemoteEventProvider(event: Type<IEvent>, proxy: ClientProxy): Provider {
+    return {
+      provide: `${event.name}RemoteEventHandler`,
+      useFactory: (bus: EventBus, serializer: SerializationService) => {
+        const handler = new CQRSMicroservicesRemoteEventHandler(proxy, serializer);
+        bus.bind(handler, event.name);
+        return handler;
+      },
+      inject: [
         EventBus,
-        EventPublisher,
+        SerializationService,
+      ],
+    };
+  }
+
+  private static createRemoteQueryProvider(query: Type<IEvent>, proxy: ClientProxy): Provider {
+    return {
+      provide: `${query.name}RemoteQueryHandler`,
+      useFactory: (bus: QueryBus, serializer: SerializationService) => {
+        const handler = new CQRSMicroservicesRemoteQueryHandler(proxy, serializer);
+        bus.bind(handler, query.name);
+        return handler;
+      },
+      inject: [
         QueryBus,
+        SerializationService,
       ],
     };
   }

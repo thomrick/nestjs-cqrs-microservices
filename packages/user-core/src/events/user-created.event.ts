@@ -1,17 +1,9 @@
 import { Event } from '@nestjs/cqrs-microservices';
 
-export interface IUserCreated {
-  readonly id: string;
-  readonly email: string;
-  readonly password: string;
-  readonly username: string;
-}
-
 @Event({
-  name: UserCreated.name,
-  factory: (data: IUserCreated) => new UserCreated(data.id, data.email, data.password, data.username) as any,
+  factory: (data: UserCreated) => new UserCreated(data.id, data.email, data.password, data.username) as any,
 })
-export class UserCreated implements IUserCreated {
+export class UserCreated {
   public readonly id: string;
   public readonly email: string;
   public readonly password: string;

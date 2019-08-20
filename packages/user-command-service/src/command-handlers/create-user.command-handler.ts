@@ -1,5 +1,5 @@
 import { EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs-microservices';
+import { CommandHandler } from '@nestjs/cqrs';
 import { CreateUser, User } from '@user/core';
 import uuid from 'uuid/v1';
 
