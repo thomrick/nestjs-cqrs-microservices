@@ -1,4 +1,4 @@
-import { Event } from '@nestjs/cqrs-microservices';
+import { Event } from '@nestjs/cqrs-microservices';
 
 @Event({
   factory: (data: ProfileCreated) => new ProfileCreated(data.id, data.user) as any,

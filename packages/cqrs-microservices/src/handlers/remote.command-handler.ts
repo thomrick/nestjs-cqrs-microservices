@@ -1,23 +1,26 @@
-import { OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { ICommand, ICommandHandler } from '@nestjs/cqrs';
 import { ClientProxy } from '@nestjs/microservices';
-import { CQRS_MICROSERVICES_COMMAND } from '../controllers';
+import { Instance } from '../common';
+import { COMMAND_LISTENER_MESSAGE_PATTERN } from '../contants';
 import { SerializationService } from '../services';
 
-export class CQRSMicroservicesRemoteCommandHandler<T extends ICommand> implements ICommandHandler<T>, OnModuleInit {
-  private readonly proxy: ClientProxy;
+@Injectable()
+export abstract class RemoteCommandHandler<T extends ICommand> implements ICommandHandler<T> {
+  protected readonly ref: ModuleRef;
+  protected abstract readonly proxy: ClientProxy;
   private readonly serializer: SerializationService;
 
-  constructor(proxy: ClientProxy, serializer: SerializationService) {
-    this.proxy = proxy;
+  constructor(ref: ModuleRef, serializer: SerializationService) {
+    this.ref = ref;
     this.serializer = serializer;
+    this.installProxy();
   }
 
-  public async onModuleInit() {
-    return this.proxy.connect();
+  public async execute(command: Instance<ICommand>): Promise<any> {
+    return this.proxy.send(COMMAND_LISTENER_MESSAGE_PATTERN, this.serializer.serialize(command)).toPromise();
   }
 
-  public execute(command: T): Promise<any> {
-    return this.proxy.send(CQRS_MICROSERVICES_COMMAND, this.serializer.serialize(command)).toPromise();
-  }
+  protected abstract installProxy(): void;
 }

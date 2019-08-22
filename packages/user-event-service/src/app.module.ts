@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CqrsMicroservicesModule } from '@nestjs/cqrs-microservices';
-import { EventHandlersModule } from './event-handlers';
+import { EventsModule } from './events';
 
 @Module({
   imports: [
-    CqrsMicroservicesModule.connect(),
-    EventHandlersModule,
+    CqrsMicroservicesModule.install(),
+    EventsModule,
   ],
 })
 export class AppModule {}

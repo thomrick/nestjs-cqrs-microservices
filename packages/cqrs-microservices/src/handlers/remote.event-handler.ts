@@ -1,24 +1,32 @@
+// tslint:disable: no-empty
+import { Injectable, Type } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { IEvent, IEventHandler } from '@nestjs/cqrs';
 import { ClientProxy } from '@nestjs/microservices';
 import { Subscription } from 'rxjs';
-import { CQRS_MICROSERVICES_EVENT } from '../controllers';
+import { Instance } from '../common';
+import { EVENT_LISTENER_EVENT_PATTERN } from '../contants';
 import { SerializationService } from '../services';
 
-// tslint:disable-next-line: no-empty
-const noop = () => {};
+function noop() {}
 
-export class CQRSMicroservicesRemoteEventHandler implements IEventHandler<IEvent> {
-  private readonly proxy: ClientProxy;
+@Injectable()
+export abstract class RemoteEventHandler<T extends IEvent> implements IEventHandler<T> {
+  protected readonly ref: ModuleRef;
+  protected abstract readonly proxy: ClientProxy;
   private readonly serializer: SerializationService;
 
-  constructor(proxy: ClientProxy, serializer: SerializationService) {
-    this.proxy = proxy;
+  constructor(ref: ModuleRef, serializer: SerializationService) {
+    this.ref = ref;
     this.serializer = serializer;
+    this.installProxy();
   }
 
-  public handle(event: IEvent) {
+  public handle(event: Instance<T>) {
     const subscription: Subscription = this.proxy
-      .emit(CQRS_MICROSERVICES_EVENT, this.serializer.serialize(event))
+      .emit(EVENT_LISTENER_EVENT_PATTERN, this.serializer.serialize(event))
       .subscribe(noop, noop, () => subscription.unsubscribe());
   }
+
+  protected abstract installProxy(): void;
 }

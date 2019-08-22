@@ -1,10 +1,9 @@
-import { ICommandHandler } from '@nestjs/cqrs';
-import { CommandHandler } from '@nestjs/cqrs-microservices';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateProfile } from '@profile/core';
 
 @CommandHandler(CreateProfile)
 export class CreateProfileHandler implements ICommandHandler<CreateProfile> {
   public async execute(command: CreateProfile): Promise<any> {
-    console.log(CreateProfile.name, 'execute', command);
+    console.log(CreateProfileHandler.name, 'exexcute', command);
   }
 }

@@ -1,1 +1,1 @@
-export * from './register-options.interface';
+export * from './remote-registration-options.interface';

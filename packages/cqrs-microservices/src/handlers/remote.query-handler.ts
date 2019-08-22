@@ -1,18 +1,25 @@
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { IQuery, IQueryHandler } from '@nestjs/cqrs';
 import { ClientProxy } from '@nestjs/microservices';
-import { CQRS_MICROSERVICE_QUERY } from '../controllers';
+import { QUERY_LISTENER_MESSAGE_PATTERN } from '../contants';
 import { SerializationService } from '../services';
 
-export class CQRSMicroservicesRemoteQueryHandler implements IQueryHandler<IQuery> {
-  private readonly proxy: ClientProxy;
+@Injectable()
+export abstract class RemoteQueryHandler<T extends IQuery> implements IQueryHandler<T> {
+  protected readonly ref: ModuleRef;
+  protected abstract readonly proxy: ClientProxy;
   private readonly serializer: SerializationService;
 
-  constructor(proxy: ClientProxy, serializer: SerializationService) {
-    this.proxy = proxy;
+  constructor(ref: ModuleRef, serializer: SerializationService) {
+    this.ref = ref;
     this.serializer = serializer;
+    this.installProxy();
   }
 
-  public execute(query: IQuery): Promise<any> {
-    return this.proxy.send(CQRS_MICROSERVICE_QUERY, this.serializer.serialize(query)).toPromise();
+  public async execute(query: T): Promise<any> {
+    return this.proxy.send(QUERY_LISTENER_MESSAGE_PATTERN, this.serializer.serialize(query)).toPromise();
   }
+
+  protected abstract installProxy(): void;
 }

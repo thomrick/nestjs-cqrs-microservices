@@ -1,1 +1,1 @@
-export * from './user.sagas';
+export * from './sagas.module';
