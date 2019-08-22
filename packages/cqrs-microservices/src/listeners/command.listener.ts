@@ -29,14 +29,12 @@ export class CommandListener implements OnModuleInit {
   }
 
   private registerUnhandled(handlers: Array<Type<ICommandHandler>> = []): void {
-    handlers
-      .filter((handler) => handler.prototype instanceof RemoteCommandHandler)
-      .forEach((handler) => {
-        const handled: Type<ICommand> | undefined = Reflect.getMetadata(COMMAND_HANDLER_METADATA, handler);
-        if (!!handled) {
-          this.unhandled.push(handled.name);
-        }
-      });
+    handlers.filter((handler) => handler.prototype instanceof RemoteCommandHandler).forEach((handler) => {
+      const handled: Type<ICommand> | undefined = Reflect.getMetadata(COMMAND_HANDLER_METADATA, handler);
+      if (!!handled) {
+        this.unhandled.push(handled.name);
+      }
+    });
   }
 
   @MessagePattern(COMMAND_LISTENER_MESSAGE_PATTERN)

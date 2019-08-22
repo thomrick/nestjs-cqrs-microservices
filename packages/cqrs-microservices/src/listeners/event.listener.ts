@@ -27,12 +27,10 @@ export class EventListener implements OnModuleInit {
   }
 
   private registerUnhandled(handlers: Array<Type<IEventHandler>> = []): void {
-    handlers
-      .filter((handler) => handler.prototype instanceof RemoteEventHandler)
-      .forEach((handler) => {
-        const handled: Array<Type<IEvent>> = Reflect.getMetadata(EVENTS_HANDLER_METADATA, handler) || [];
-        this.unhandled.push(...handled.map((current) => current.name));
-      });
+    handlers.filter((handler) => handler.prototype instanceof RemoteEventHandler).forEach((handler) => {
+      const handled: Array<Type<IEvent>> = Reflect.getMetadata(EVENTS_HANDLER_METADATA, handler) || [];
+      this.unhandled.push(...handled.map((current) => current.name));
+    });
   }
 
   @EventPattern(EVENT_LISTENER_EVENT_PATTERN)
